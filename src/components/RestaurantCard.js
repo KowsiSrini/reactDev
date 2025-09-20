@@ -2,6 +2,12 @@ import { CDN_URL } from "../utils/constants";
 
 const RestaurantCard = (props) => {
   const { resdata } = props;
+  const info = resdata;
+  if (!info) {
+    return null;
+    // or return <div className="res-card empty">No data available</div>;
+  }
+
   const {
     name,
     cuisines,
@@ -9,7 +15,8 @@ const RestaurantCard = (props) => {
     cloudinaryImageId,
     avgRating,
     costForTwo,
-  } = resdata.data;
+  } = info;
+
   return (
     <div className="res-card">
       <img
