@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import restrautList from "../utils/mockData";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
-
+import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 const Body = () => {
   console.log("body rendered");
 
@@ -31,6 +32,13 @@ const Body = () => {
     );
   };
 
+  const onlineStatus = useOnlineStatus();
+  if (onlineStatus === false)
+    return (
+      <div>
+        <h3> Looks Like you're offline</h3>
+      </div>
+    );
   if (list.length === 0) {
     return <Shimmer />;
   }
@@ -75,11 +83,17 @@ const Body = () => {
       </div>
       <div className="res-container">
         {filteredList.map((restaurant) => {
+          console.log(restaurant.info?.id);
+
           return (
-            <RestaurantCard
-              key={restaurant.info?.id} // ✅ name + index as fallback
-              resdata={restaurant.info}
-            />
+            <Link
+              key={restaurant.info?.id}
+              to={"restaurants/" + restaurant.info?.id}>
+              <RestaurantCard
+                // ✅ name + index as fallback
+                resdata={restaurant.info}
+              />
+            </Link>
           );
         })}
       </div>
